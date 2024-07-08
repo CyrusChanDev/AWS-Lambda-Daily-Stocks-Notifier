@@ -2,8 +2,9 @@ from datetime import datetime
 import yfinance as yf
 
 
-with open("stocks.config", "r") as file:
-    stocks_of_interest = [line.strip() for line in file]
+#with open("stocks.config", "r") as file:
+#    stocks_of_interest = [line.strip() for line in file]
+stocks_of_interest = ["SPY", "AAPL", "GOOG", "AMZN"]        # Get it working with AWS Lambda first before pre-optimizing
 
 current_date = datetime.now()
 
