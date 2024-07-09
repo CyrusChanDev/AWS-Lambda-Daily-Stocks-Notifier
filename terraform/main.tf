@@ -41,6 +41,21 @@ resource "aws_lambda_layer_version" "yfinance_layer" {
   compatible_runtimes = ["python3.10"]
 }
 
+# Make Terraform automatically zip the main Lambda file before deploying
+data "archive_file" "lambda_function_zip" {
+    type        = "zip"
+    source_file = "../lambda_function.py"
+    output_path = "../${path.module}/lambda_function.zip"
+}
+
+# Delete the automatically created Lambda zip when 'terraform destroy' command is run
+resource "null_resource" "lambda_function_zip_cleanup" {
+  provisioner "local-exec" {
+    when    = destroy
+    command = "rm -f ../${path.module}/lambda_function.zip"
+  }
+}
+
 resource "aws_lambda_function" "lambda_function" {
   filename         = "../lambda_function.zip"
   function_name    = "my_lambda_function"
@@ -58,8 +73,6 @@ resource "aws_lambda_function" "lambda_function" {
   layers = [
     aws_lambda_layer_version.yfinance_layer.arn,
   ]
-
-  source_code_hash = filebase64sha256("../lambda_function.zip")
 }
 
 output "lambda_function_arn" {
