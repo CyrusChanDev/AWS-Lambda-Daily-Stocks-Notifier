@@ -10,6 +10,7 @@ provider "aws" {
   region = "us-west-2"
 }
 
+# The purpose of assuming a Lambda role is to grant clearly defined permissions to execute functions
 resource "aws_iam_role" "lambda_role" {
   name = "lambda_role"
 
@@ -27,11 +28,13 @@ resource "aws_iam_role" "lambda_role" {
   })
 }
 
+# Attach IAM policy to IAM role
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+# AWS Lambda layers allows the use of 3rd party Python libraries (like yfinance)
 resource "aws_lambda_layer_version" "yfinance_layer" {
   filename   = "../python.zip"
   layer_name = "yfinance_layer_terraform"
