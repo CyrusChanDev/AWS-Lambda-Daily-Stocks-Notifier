@@ -3,6 +3,7 @@ import os
 import time
 from datetime import datetime
 import yfinance as yf
+import requests
 
 
 def lambda_handler(event, context):
@@ -29,6 +30,12 @@ def lambda_handler(event, context):
         else:
             result[stock] = f"No data available for {stock} on {formatted_date}"
 
+    ntfy_string = ""
+    for key, value in result.items():
+        ntfy_string += value + "\n"
+
+    requests.post("https://ntfy.sh/cyruschandev", data=ntfy_string.encode(encoding="utf-8"))
+
     return {
         "statusCode": 200,
         "body": json.dumps(result)
@@ -39,4 +46,4 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     event = []
     context = []
-    print(lambda_handler(event, context))
+    lambda_handler(event, context)
