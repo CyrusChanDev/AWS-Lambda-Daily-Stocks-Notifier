@@ -12,6 +12,8 @@ function_name = "my_lambda_function"
 lambda_handler = "lambda_function.lambda_handler"
 lambda_timeout = 7
 timezone = "America/Vancouver"
+ticker_symbols = ["SPY", "AAPL", "GOOG", "AMZN"]
+ntfy_server_topic = "https://ntfy.sh/cyruschandev"
 
 # iam.tf -----
 

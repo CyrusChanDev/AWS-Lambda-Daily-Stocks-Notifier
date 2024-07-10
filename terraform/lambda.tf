@@ -31,6 +31,8 @@ resource "aws_lambda_function" "lambda_function" {
   environment {
     variables = {
       TZ = var.timezone
+      ticker_symbols = jsonencode(var.ticker_symbols)
+      ntfy_server_topic = var.ntfy_server_topic
     }
   }
 

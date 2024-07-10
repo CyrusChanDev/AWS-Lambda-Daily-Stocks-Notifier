@@ -47,6 +47,16 @@ variable "timezone" {
   type        = string
 }
 
+variable "ticker_symbols" {
+  description = "The stock(s) where information should be gathered from"
+  type        = list(string)
+}
+
+variable "ntfy_server_topic" {
+  description = "The ntfy server topic where the notification should be sent"
+  type        = string
+}
+
 # iam.tf -----
 
 variable "role_name" {

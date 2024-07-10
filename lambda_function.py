@@ -7,10 +7,10 @@ import requests
 
 
 def lambda_handler(event, context):
-    stocks_of_interest = ["SPY", "AAPL", "GOOG", "AMZN"]
+    stocks_of_interest = json.loads(os.environ["ticker_symbols"])
 
     # Explicitly state the timezone so there is no confusion about the behavior
-    os.environ["TZ"] = "America/Vancouver"
+    #os.environ["TZ"] = "America/Vancouver"
     time.tzset()
 
     current_date = datetime.now()
@@ -33,8 +33,9 @@ def lambda_handler(event, context):
     ntfy_string = ""
     for key, value in result.items():
         ntfy_string += value + "\n"
+    ntfy_string += f"\nThe configured timezone is {os.environ['TZ']}."
 
-    requests.post("https://ntfy.sh/cyruschandev", data=ntfy_string.encode(encoding="utf-8"))
+    requests.post(os.environ["ntfy_server_topic"], data=ntfy_string.encode(encoding="utf-8"))
 
     return {
         "statusCode": 200,
