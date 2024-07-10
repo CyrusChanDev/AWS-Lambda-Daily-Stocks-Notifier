@@ -1,14 +1,14 @@
 # AWS Lambda layers allows the use of 3rd party Python libraries (like yfinance)
 resource "aws_lambda_layer_version" "yfinance_layer" {
-  filename   = "../python.zip"
-  layer_name = "yfinance_layer_terraform"
-  compatible_runtimes = ["python3.10"]
+  filename   = var.layer_filename
+  layer_name = var.layer_name
+  compatible_runtimes = [var.lambda_runtime]
 }
 
 # Make Terraform automatically zip the main Lambda file before deploying
 data "archive_file" "lambda_function_zip" {
     type        = "zip"
-    source_file = "../lambda_function.py"
+    source_file = var.lambda_source_file
     output_path = "../${path.module}/lambda_function.zip"
 }
 
@@ -22,15 +22,15 @@ resource "null_resource" "lambda_function_zip_cleanup" {
 
 resource "aws_lambda_function" "lambda_function" {
   filename         = "../lambda_function.zip"
-  function_name    = "my_lambda_function"
+  function_name    = var.function_name
   role             = aws_iam_role.lambda_role.arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.10"
+  handler          = var.lambda_handler
+  runtime          = var.lambda_runtime
   timeout          = 7
 
   environment {
     variables = {
-      TZ = "America/Vancouver"
+      TZ = var.timezone
     }
   }
 
