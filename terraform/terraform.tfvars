@@ -24,5 +24,7 @@ policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
 event_rule_name = "invoke_lambda_on_a_schedule"
 # Cron runs every 2 minutes for easier debugging during development
-schedule_expression = "cron(*/2 * * * ? *)"
+#schedule_expression = "cron(*/2 * * * ? *)"
+# Cron runs every weekday at 6:33 AM PST, 3 minutes after NYSE and Nasdaq opens
+schedule_expression = "cron(33 13 ? * MON-FRI *)"
 event_target_id = "my_lambda_target"
