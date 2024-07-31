@@ -26,15 +26,25 @@ Navigate to the `./terraform` directory and run the following command in the ter
 
 `terraform apply -auto-approve`  
 
+![Terraform apply](./images/terraform_apply.png)
+
 When you see Terraform return `Apply complete!` in the shell, you will know that you have provisioned the resources successfully.
 
 To tear down the cloud infrastructure in the future, run the following command in the `./terraform` directory in the terminal:
 
 `terraform destroy -auto-approve`
 
+![Terraform destroy](./images/terraform_destroy.png)
+
 ## Screenshots/Demo
 
-Screenshots will be added here shortly.
+This is the cron expression for EventBridge:
+
+![Cron expression EventBridge](./images/cron_expression_eventbridge.png)
+
+Example of the notifications received on ntfy.sh:
+
+![ntfy notifications](./images/ntfy_notifications.png)
 
 ## Credits
 
